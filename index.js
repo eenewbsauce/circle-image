@@ -38,8 +38,6 @@ function getDimensions() {
 
 function processImages() {
   var cropAndCircularize = function(size) {
-    //async([delay, delay, delay]);
-
     async.series([
       function(callback) {
         crop(size).then(function success(response){
@@ -59,22 +57,6 @@ function processImages() {
       console.log(err);
       console.log(results);
     });
-
-    // async.series({
-    //   one: function(callback){
-    //       setTimeout(function(){
-    //           callback(null, 1);
-    //       }, 10000);
-    //   },
-    //   two: function(callback){
-    //     console.log('hit')
-    //       setTimeout(function(){
-    //           callback(null, 2);
-    //       }, 100);
-    //   }
-    // }, function (err, results) {
-    //   console.log(results);
-    // });
   }
 
   async.each(sizes, function(size) {
@@ -83,25 +65,14 @@ function processImages() {
   });
 }
 
-var delay = function delay(){
-  console.log("delay started");
-  var defer = Q.defer();
-  setTimeout(function(){
-    console.log("delay complete");
-    defer.resolve("yay");
-  }, 1000);
-  return defer.promise;
-};
-
 var crop = function crop(size) {
   console.log('cropping: ' + size);
   return easyimg.exec('convert '+path+' -resize ' +
     (size) + 'x' + (size) + '^  -gravity center -crop ' +
     (size + 2) + 'x' + (size + 2) + '+0+0 +repage ' + format(outputTempFilePath, size));//.then(function success(){
-      // fs.unlink(format(outputTempFilePath, size), function(err){
-      //   if (err) return err;
-      //   callback(null, 'yay');
-      //  });
+    //   fs.unlink(format(outputTempFilePath, size), function(err){
+    //     if (err) return err;
+    //    });
     // }, function error(err) {
     //   callback(err, null);
     // });
