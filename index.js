@@ -7,13 +7,12 @@ var fs = require('fs');
 var path = 'test.jpg';
 var outputTempFilePath = 'temp_%d.png';
 var outputFilePath = 'circle_%d.png';
-var sizes = [150, 125, 100, 33];
-var size;
+//var sizes = [150, 125, 100, 33];
 
-(function execute() {
+exports.execute = function execute(sizesArray) {
   getDimensions().then(function success(dimensions) {
     if (dimensions.width > sizes[0] && dimensions.height > sizes[0] && dimensions.width === dimensions.height) {
-      processImages().then(function success(image) {
+      processImages(sizesArray).then(function success(image) {
         return image;
       }, function error(err) {
         console.log(err);
@@ -24,7 +23,7 @@ var size;
   }, function error(err) {
     console.log(err);
   });
-}());
+};
 
 function getDimensions() {
   return easyimg.info(path).then(
@@ -36,7 +35,7 @@ function getDimensions() {
   );
 }
 
-function processImages() {
+function processImages(sizesArray) {
   var cropAndCircularize = function(size) {
     async.series([
       function(callback) {
@@ -59,7 +58,7 @@ function processImages() {
     });
   }
 
-  async.each(sizes, function(size) {
+  async.each(sizesArray, function(size) {
     console.log('processing image size: ' + size);
     cropAndCircularize(size);
   });
