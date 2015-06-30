@@ -37,50 +37,77 @@ function getDimensions() {
 }
 
 function processImages() {
-  var cropAndCircularize = function(sz) {
-    size = sz;
-    async.series([
-      crop,
-      delay,
-      circularize
-    ]);
-  };
-  // var cb = function(size) {
-  //   console.log('processed size: ' + size);
-  // };
+  var cropAndCircularize = function(size) {
+    //async([delay, delay, delay]);
 
-  //return async.each(sizes, function(size) {
-    console.log('processing image size: ' + sizes[0]);
-    cropAndCircularize(sizes[0]);
-    //cb(size);
-  //});
+    async.series([
+      function(callback) {
+        crop(size).then(function success(response){
+          callback(null, response);
+        }, function error(err) {
+          callback(err, null);
+        });
+      },
+      function(callback) {
+        circularize(size).then(function success(response){
+          callback(null, response);
+        }, function error(err) {
+          callback(err, null);
+        });
+      }
+    ], function(err, results) {
+      console.log(err);
+      console.log(results);
+    });
+
+    // async.series({
+    //   one: function(callback){
+    //       setTimeout(function(){
+    //           callback(null, 1);
+    //       }, 10000);
+    //   },
+    //   two: function(callback){
+    //     console.log('hit')
+    //       setTimeout(function(){
+    //           callback(null, 2);
+    //       }, 100);
+    //   }
+    // }, function (err, results) {
+    //   console.log(results);
+    // });
+  }
+
+  async.each(sizes, function(size) {
+    console.log('processing image size: ' + size);
+    cropAndCircularize(size);
+  });
 }
 
 var delay = function delay(){
+  console.log("delay started");
   var defer = Q.defer();
   setTimeout(function(){
     console.log("delay complete");
     defer.resolve("yay");
-  }, 3000);
+  }, 1000);
   return defer.promise;
 };
 
-var crop = function crop() {
+var crop = function crop(size) {
   console.log('cropping: ' + size);
-  var defer = Q.defer();
-  easyimg.exec('convert '+path+' -resize ' +
+  return easyimg.exec('convert '+path+' -resize ' +
     (size) + 'x' + (size) + '^  -gravity center -crop ' +
-    (size + 2) + 'x' + (size + 2) + '+0+0 +repage ' + format(outputTempFilePath, size))
-    .then(function(){
-    //   fs.unlink(format(outputTempFilePath, size), function(err){
-    //     if (err) defer.reject(err)
-         defer.resolve('yay');
-    //   });
-    });
-  return defer.promise;
+    (size + 2) + 'x' + (size + 2) + '+0+0 +repage ' + format(outputTempFilePath, size));//.then(function success(){
+      // fs.unlink(format(outputTempFilePath, size), function(err){
+      //   if (err) return err;
+      //   callback(null, 'yay');
+      //  });
+    // }, function error(err) {
+    //   callback(err, null);
+    // });
 };
 
-var circularize = function circularize() {
+var circularize = function circularize(size) {
   console.log('circularizing: ' + size);
   var radius = (size/2) - 1;
   var circleSize = format('%1$d,%1$d %1$d 0', radius);
@@ -91,8 +118,6 @@ var circularize = function circularize() {
 };
 
 function unlink(path) {
-  // console.log('unlinking: ' + path)
-  // return Q.fcall(fs.unlink(path, function(){console.log('unlinked: ' + path)}));
   var defer = Q.defer();
   console.log('unlinking: ' + path);
 
@@ -104,21 +129,4 @@ function unlink(path) {
   })
 
   return defer.promise;
-  //console.log('unlinking: ' + path);
-  //return Q.fcall(fs.unlinkSync(path));
-  // var defer = Q.defer();
-  //
-  // console.log('unlinking: ' + path);
-  //
-  // fs.unlink(path, function (err) {
-  //   if (err) {
-  //     console.log("error in unlink");
-  //     defer.reject(err);
-  //   } else {
-  //     console.log("successfully unlinked");
-  //     defer.resolve();
-  //   }
-  // });
-  //
-  // return defer.promise;
 }
