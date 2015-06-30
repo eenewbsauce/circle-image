@@ -1,6 +1,6 @@
 {
   "name": "circle-image",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple library for circular cropping of images. This package can create several versions of the same image and upload them to S3",
   "main": "index.js",
   "scripts": {
