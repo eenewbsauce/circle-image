@@ -37,7 +37,7 @@ function getDimensions(path) {
 }
 
 function processImages(path, sizesArray) {
-  var cropAndCircularize = function(path, size) {
+  var cropAndCircularize = function(size) {
     async.series([
       function(callback) {
         crop(path, size).then(function success(response){
