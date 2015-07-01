@@ -5,8 +5,8 @@ var Q = require('q');
 var fs = require('fs');
 
 //var path = 'test.jpg';
-var outputTempFilePath = '/uploads/temp_%d.png';
-var outputFilePath = '/uploads/circle_%d.png';
+var outputTempFilePath = '~/uploads/temp_%d.png';
+var outputFilePath = '~/uploads/circle_%d.png';
 //var sizes = [150, 125, 100, 33];
 
 exports.execute = function execute(imagePath, sizesArray) {

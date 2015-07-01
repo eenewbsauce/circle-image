@@ -12,5 +12,5 @@ npm install circle-image --save
 ```javascript
 var images = require('circle-image');
 var imageSizes = [125, 100, 30];
-images.execute(imageSizes);
+images.execute('imagepath', imageSizes);
 ```
