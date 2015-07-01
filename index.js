@@ -6,8 +6,12 @@ var fs = require('fs');
 var path = require('path');
 
 //var path = 'test.jpg';
-var outputTempFilePath = path.dirname(require.main.filename) + '/uploads/temp_%d.png';
-var outputFilePath = path.dirname(require.main.filename) +'/uploads/circle_%d.png';
+var basePath = path.dirname(require.main.filename);
+var baseParts = basePath.split('/');
+var reducedPath = baseParts.splice(-1, 1);
+var finalPath = reducedPath.join('/');
+var outputTempFilePath = finalPath + '/uploads/temp_%d.png';
+var outputFilePath = finalPath +'/uploads/circle_%d.png';
 //var sizes = [150, 125, 100, 33];
 
 exports.execute = function execute(imagePath, sizesArray) {
