@@ -4,15 +4,16 @@ var format = require('sprintf-js').sprintf;
 var Q = require('q');
 var fs = require('fs');
 
-var path = 'test.jpg';
+//var path = 'test.jpg';
 var outputTempFilePath = 'temp_%d.png';
 var outputFilePath = 'circle_%d.png';
 //var sizes = [150, 125, 100, 33];
 
-exports.execute = function execute(sizesArray) {
-  getDimensions().then(function success(dimensions) {
-    if (dimensions.width > sizes[0] && dimensions.height > sizes[0] && dimensions.width === dimensions.height) {
-      processImages(sizesArray).then(function success(image) {
+exports.execute = function execute(imagePath, sizesArray) {
+  getDimensions(imagePath).then(function success(dimensions) {
+    var sortedSizes = sizes.sort(function(a, b){return b-a});
+    if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0] && dimensions.width === dimensions.height) {
+      processImages(imagePath, sortedSizes).then(function success(image) {
         return image;
       }, function error(err) {
         console.log(err);
@@ -25,7 +26,7 @@ exports.execute = function execute(sizesArray) {
   });
 };
 
-function getDimensions() {
+function getDimensions(path) {
   return easyimg.info(path).then(
     function(file) {
       return { width: file.width, height: file.height };
@@ -35,18 +36,18 @@ function getDimensions() {
   );
 }
 
-function processImages(sizesArray) {
-  var cropAndCircularize = function(size) {
+function processImages(path, sizesArray) {
+  var cropAndCircularize = function(path, size) {
     async.series([
       function(callback) {
-        crop(size).then(function success(response){
+        crop(path, size).then(function success(response){
           callback(null, response);
         }, function error(err) {
           callback(err, null);
         });
       },
       function(callback) {
-        circularize(size).then(function success(response){
+        circularize(path, size).then(function success(response){
           callback(null, response);
         }, function error(err) {
           callback(err, null);
@@ -64,7 +65,7 @@ function processImages(sizesArray) {
   });
 }
 
-var crop = function crop(size) {
+var crop = function crop(path, size) {
   console.log('cropping: ' + size);
   return easyimg.exec('convert '+path+' -resize ' +
     (size) + 'x' + (size) + '^  -gravity center -crop ' +
@@ -77,7 +78,7 @@ var crop = function crop(size) {
     // });
 };
 
-var circularize = function circularize(size) {
+var circularize = function circularize(path, size) {
   console.log('circularizing: ' + size);
   var radius = (size/2) - 1;
   var circleSize = format('%1$d,%1$d %1$d 0', radius);
