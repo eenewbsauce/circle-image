@@ -83,10 +83,8 @@ function processImages(path, uniqueId, sizesArray) {
     console.log('processing image size: ' + size);
     cropAndCircularize(size).then(function success () {
       callback();
-      defer.resolve();
     }, function error (err) {
       callback(err);
-      defer.reject(err)
     });
   }, function (err) {
     if (err) defer.reject(err)
