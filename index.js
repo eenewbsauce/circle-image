@@ -14,20 +14,23 @@ var outputFilePath = finalPath +'/uploads/circle_user_%d_%d.png';
 //var sizes = [150, 125, 100, 33];
 
 exports.execute = function execute(imagePath, uniqueId, sizesArray) {
+  var defer = Q.defer();
   getDimensions(imagePath).then(function success(dimensions) {
     var sortedSizes = sizesArray.sort(function(a, b){return b-a});
     if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0] && dimensions.width === dimensions.height) {
-      return processImages(imagePath, uniqueId, sortedSizes).then(function success(image) {
-        return image;
+      processImages(imagePath, uniqueId, sortedSizes).then(function success(paths) {
+        defer.resolve(paths);
       }, function error(err) {
-        return err;
+        defer.reject(err);
       });
     } else {
-      return "image is too small to process";
+      defer.reject("image is too small to process");
     }
   }, function error(err) {
-    return err;
+    defere.reject(err);
   });
+
+  return defer.promise;
 };
 
 function getDimensions(path) {
