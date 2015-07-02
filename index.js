@@ -5,29 +5,28 @@ var Q = require('q');
 var fs = require('fs');
 var path = require('path');
 
-//var path = 'test.jpg';
 var basePath = path.dirname(require.main.filename);
 var baseParts = basePath.split('/');
 baseParts.splice(-1, 1);
 var finalPath = baseParts.join('/');
-var outputTempFilePath = finalPath + '/uploads/temp_%d.png';
-var outputFilePath = finalPath +'/uploads/circle_%d.png';
+var outputTempFilePath = finalPath + '/uploads/temp_user_%d_%d.png';
+var outputFilePath = finalPath +'/uploads/circle_user_%d_%d.png';
 //var sizes = [150, 125, 100, 33];
 
-exports.execute = function execute(imagePath, sizesArray) {
-  getDimensions(imagePath).then(function success(dimensions) {
+exports.execute = function execute(imagePath, uniqueId, sizesArray) {
+  return getDimensions(imagePath).then(function success(dimensions) {
     var sortedSizes = sizesArray.sort(function(a, b){return b-a});
     if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0] && dimensions.width === dimensions.height) {
-      processImages(imagePath, sortedSizes).then(function success(image) {
+      processImages(imagePath, uniqueId, sortedSizes).then(function success(image) {
         return image;
       }, function error(err) {
-        console.log(err);
+        return err;
       });
     } else {
       return "image is too small to process";
     }
   }, function error(err) {
-    console.log(err);
+    return err;
   });
 };
 
@@ -41,18 +40,21 @@ function getDimensions(path) {
   );
 }
 
-function processImages(path, sizesArray) {
+function processImages(path, uniqueId, sizesArray) {
+  var defer = Q.defer();
+  var paths = [];
+
   var cropAndCircularize = function(size) {
     async.series([
       function(callback) {
-        crop(path, size).then(function success(response){
+        crop(path, uniqueId, size).then(function success(response){
           callback(null, response);
         }, function error(err) {
           callback(err, null);
         });
       },
       function(callback) {
-        circularize(path, size).then(function success(response){
+        circularize(path, uniqueId, size).then(function success(response){
           callback(null, response);
         }, function error(err) {
           callback(err, null);
@@ -61,48 +63,45 @@ function processImages(path, sizesArray) {
     ], function(err, results) {
       console.log(err);
       console.log(results);
+      paths.push(results[1]);
     });
   }
 
   async.each(sizesArray, function(size) {
     console.log('processing image size: ' + size);
     cropAndCircularize(size);
+  }, function (err) {
+    if (err) defer.reject(err)
+    defer.resolve(paths);
   });
-}
-
-var crop = function crop(path, size) {
-  console.log('cropping: ' + size);
-  return easyimg.exec('convert '+path+' -resize ' +
-    (size) + 'x' + (size) + '^  -gravity center -crop ' +
-    (size + 2) + 'x' + (size + 2) + '+0+0 +repage ' + format(outputTempFilePath, size));//.then(function success(){
-    //   fs.unlink(format(outputTempFilePath, size), function(err){
-    //     if (err) return err;
-    //    });
-    // }, function error(err) {
-    //   callback(err, null);
-    // });
-};
-
-var circularize = function circularize(path, size) {
-  console.log('circularizing: ' + size);
-  var radius = (size/2) - 1;
-  var circleSize = format('%1$d,%1$d %1$d 0', radius);
-
-  return easyimg.exec('convert ' + format(outputTempFilePath, size) + ' \\( -size ' + (size) + 'x' + (size) +
-  ' xc:none -fill white -draw \'circle ' + circleSize + '\' \\) ' +
-  '-compose copy_opacity -composite ' + format(outputFilePath, size));
-};
-
-function unlink(path) {
-  var defer = Q.defer();
-  console.log('unlinking: ' + path);
-
-  fs.unlink(path, function(err) {
-    console.log('unlinked: ' + path);
-
-    if (err) defer.reject(err);
-    defer.resolve("yay!");
-  })
 
   return defer.promise;
 }
+
+var crop = function crop(path, uniqueId, size) {
+  console.log('cropping: ' + size);
+  var finalPath = format(outputTempFilePath, uniqueId, size);
+
+  return easyimg.exec('convert '+path+' -resize ' +
+    (size) + 'x' + (size) + '^  -gravity center -crop ' +
+    (size + 2) + 'x' + (size + 2) + '+0+0 +repage ' + finalPath).then(function success () {
+      return finalPath;
+    }, function error (err) {
+      return err;
+    });
+};
+
+var circularize = function circularize(path, uniqueId, size) {
+  console.log('circularizing: ' + size);
+  var radius = (size/2) - 1;
+  var circleSize = format('%1$d,%1$d %1$d 0', radius);
+  var finalPath = format(outputTempFilePath, uniqueId, size);
+
+  return easyimg.exec('convert ' + finalPath + ' \\( -size ' + (size) + 'x' + (size) +
+  ' xc:none -fill white -draw \'circle ' + circleSize + '\' \\) ' +
+  '-compose copy_opacity -composite ' + finalPath).then(function success () {
+    return finalPath;
+  }, function error (err) {
+    return err;
+  });
+};
