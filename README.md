@@ -1,13 +1,28 @@
 Circle-Image
 ============
 
-##Installation
+circle-image is based on ImageMagick. You can install it one of the following ways:
+
+On Ubuntu
+```
+$ apt-get install imagemagick
+```
+On Mac OS X
+```
+$ brew install imagemagick
+```
+On CentOS
+```
+$ yum install imagemagick
+```
+
+## Installation
 
 ```bash
 npm install circle-image --save
 ```
 
-##Usage
+## Usage
 
 ```javascript
 var images = require('circle-image');
