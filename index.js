@@ -48,6 +48,8 @@ function processImages(path, uniqueId, sizesArray) {
   var paths = [];
 
   var cropAndCircularize = function(size) {
+    var defer = Q.defer();
+
     async.series([
       function(callback) {
         crop(path, uniqueId, size).then(function success(response){
@@ -64,15 +66,28 @@ function processImages(path, uniqueId, sizesArray) {
         });
       }
     ], function(err, results) {
-      console.log(err);
-      console.log(results);
-      paths.push(results[0]);
+      if (err) {
+        console.log(err);
+        defer.reject(err);
+      } else {
+        console.log(results);
+        paths.push(results[0]);
+        defer.resolve();
+      }
     });
+
+    return defer.promise;
   }
 
-  async.each(sizesArray, function(size) {
+  async.each(sizesArray, function(size, callback) {
     console.log('processing image size: ' + size);
-    cropAndCircularize(size);
+    cropAndCircularize(size).then(function success () {
+      callback();
+      defer.resolve();
+    }, function error (err) {
+      callback(err);
+      defer.reject(err)
+    });
   }, function (err) {
     if (err) defer.reject(err)
     defer.resolve(paths);
