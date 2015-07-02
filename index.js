@@ -14,7 +14,7 @@ var outputFilePath = finalPath +'/uploads/circle_user_%d_%d.png';
 //var sizes = [150, 125, 100, 33];
 
 exports.execute = function execute(imagePath, uniqueId, sizesArray) {
-  return getDimensions(imagePath).then(function success(dimensions) {
+  getDimensions(imagePath).then(function success(dimensions) {
     var sortedSizes = sizesArray.sort(function(a, b){return b-a});
     if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0] && dimensions.width === dimensions.height) {
       return processImages(imagePath, uniqueId, sortedSizes).then(function success(image) {
