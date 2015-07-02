@@ -27,5 +27,10 @@ npm install circle-image --save
 ```javascript
 var images = require('circle-image');
 var imageSizes = [125, 100, 30];
-images.execute('imagepath', imageSizes);
+//uniqueId param is used to identify a user
+//so user the primary key or something guaranteed to be unique
+images.execute('imagepath', uniqueId, imageSizes).then(function (paths) {
+  //array of circularized image paths
+  console.log(paths);
+})
 ```
