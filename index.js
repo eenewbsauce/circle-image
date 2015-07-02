@@ -18,7 +18,7 @@ exports.execute = function execute(imagePath, uniqueId, sizesArray) {
   getDimensions(imagePath).then(function success(dimensions) {
     var sortedSizes = sizesArray.sort(function(a, b){return b-a});
     if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0] && dimensions.width === dimensions.height) {
-      return processImages(imagePath, uniqueId, sortedSizes).then(function success(paths) {
+      processImages(imagePath, uniqueId, sortedSizes).then(function success(paths) {
         defer.resolve(paths);
       }, function error(err) {
         defer.reject(err);
