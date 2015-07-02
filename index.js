@@ -17,7 +17,7 @@ exports.execute = function execute(imagePath, uniqueId, sizesArray) {
   return getDimensions(imagePath).then(function success(dimensions) {
     var sortedSizes = sizesArray.sort(function(a, b){return b-a});
     if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0] && dimensions.width === dimensions.height) {
-      processImages(imagePath, uniqueId, sortedSizes).then(function success(image) {
+      return processImages(imagePath, uniqueId, sortedSizes).then(function success(image) {
         return image;
       }, function error(err) {
         return err;
@@ -63,7 +63,7 @@ function processImages(path, uniqueId, sizesArray) {
     ], function(err, results) {
       console.log(err);
       console.log(results);
-      paths.push(results[1]);
+      paths.push(results[0]);
     });
   }
 
