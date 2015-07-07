@@ -5,7 +5,7 @@ circle-image is based on ImageMagick. You can install it one of the following wa
 
 On Ubuntu
 ```
-$ apt-get install imagemagick
+$ apt-get install ImageMagick
 ```
 On Mac OS X
 ```
