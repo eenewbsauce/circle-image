@@ -9,11 +9,11 @@ $ apt-get install imagemagick
 ```
 On Mac OS X
 ```
-$ brew install imagemagick
+$ brew install ImageMagick
 ```
 On CentOS
 ```
-$ yum install imagemagick
+$ yum install ImageMagick
 ```
 
 ## Installation
