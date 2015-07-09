@@ -96,12 +96,12 @@ function processImages(path, uniqueId, sizesArray) {
 
 var resize = function resize(path, uniqueId, size) {
   console.log('cropping: ' + size);
-  //var tempPath = format(outputTempFilePath, uniqueId, size);
-  var finalPath = format(outputFilePath, uniqueId, size);
+  var tempPath = format(outputTempFilePath, uniqueId, size);
+  //var finalPath = format(outputFilePath, uniqueId, size);
 
   return easyimg.exec('convert ' + path + ' -resize ' +
     (size) + 'x' + (size) + '^  -gravity center -crop ' +
-    (size + 2) + 'x' + (size + 2) + '+0+0 +repage ' + finalPath).then(function success () {
+    (size + 2) + 'x' + (size + 2) + '+0+0 +repage ' + tempPath).then(function success () {
       return finalPath;
     }, function error (err) {
       return err;
