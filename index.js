@@ -97,7 +97,6 @@ function processImages(path, uniqueId, sizesArray) {
 var resize = function resize(path, uniqueId, size) {
   console.log('cropping: ' + size);
   var tempPath = format(outputTempFilePath, uniqueId, size);
-  //var finalPath = format(outputFilePath, uniqueId, size);
 
   return easyimg.exec('convert ' + path + ' -resize ' +
     (size) + 'x' + (size) + '^  -gravity center -crop ' +
@@ -112,9 +111,10 @@ var circularize = function circularize(path, uniqueId, size) {
   console.log('circularizing: ' + size);
   var radius = (size/2) - 1;
   var circleSize = format('%1$d,%1$d %1$d 0', radius);
+  var tempPath = format(outputTempFilePath, uniqueId, size);
   var finalPath = format(outputFilePath, uniqueId, size);
 
-  return easyimg.exec('convert ' + finalPath + ' \\( -size ' + (size) + 'x' + (size) +
+  return easyimg.exec('convert ' + tempPath + ' \\( -size ' + (size) + 'x' + (size) +
   ' xc:none -fill white -draw \'circle ' + circleSize + '\' \\) ' +
   '-compose copy_opacity -composite ' + finalPath).then(function success () {
     return finalPath;
