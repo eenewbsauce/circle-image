@@ -71,7 +71,7 @@ function processImages(path, uniqueId, sizesArray) {
         defer.reject(err);
       } else {
         console.log(results);
-        paths.push(results[0]);
+        paths.push(results[1]);
         defer.resolve();
       }
     });
@@ -102,7 +102,7 @@ var resize = function resize(path, uniqueId, size) {
   return easyimg.exec('convert ' + path + ' -resize ' +
     (size) + 'x' + (size) + '^  -gravity center -crop ' +
     (size + 2) + 'x' + (size + 2) + '+0+0 +repage ' + tempPath).then(function success () {
-      return finalPath;
+      return tempPath;
     }, function error (err) {
       return err;
     });
@@ -112,7 +112,7 @@ var circularize = function circularize(path, uniqueId, size) {
   console.log('circularizing: ' + size);
   var radius = (size/2) - 1;
   var circleSize = format('%1$d,%1$d %1$d 0', radius);
-  var finalPath = format(outputTempFilePath, uniqueId, size);
+  var finalPath = format(outputFilePath, uniqueId, size);
 
   return easyimg.exec('convert ' + finalPath + ' \\( -size ' + (size) + 'x' + (size) +
   ' xc:none -fill white -draw \'circle ' + circleSize + '\' \\) ' +
