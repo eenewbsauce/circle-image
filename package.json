@@ -1,6 +1,6 @@
 {
   "name": "circle-image",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "A simple library for circular cropping of images. This package can create several sizes of the same image and save them to disk. Using any method of your choice, you could upload the files to S3 after processing is complete.",
   "main": "index.js",
   "scripts": {
