@@ -47,12 +47,12 @@ function processImages(path, uniqueId, sizesArray) {
   var defer = Q.defer();
   var paths = [];
 
-  var cropAndCircularize = function(size) {
+  var resizeAndCircularize = function(size) {
     var defer = Q.defer();
 
     async.series([
       function(callback) {
-        crop(path, uniqueId, size).then(function success(response){
+        resize(path, uniqueId, size).then(function success(response){
           callback(null, response);
         }, function error(err) {
           callback(err, null);
@@ -81,7 +81,7 @@ function processImages(path, uniqueId, sizesArray) {
 
   async.each(sizesArray, function(size, callback) {
     console.log('processing image size: ' + size);
-    cropAndCircularize(size).then(function success () {
+    resizeAndCircularize(size).then(function success () {
       callback();
     }, function error (err) {
       callback(err);
@@ -94,7 +94,7 @@ function processImages(path, uniqueId, sizesArray) {
   return defer.promise;
 }
 
-var crop = function crop(path, uniqueId, size) {
+var resize = function resize(path, uniqueId, size) {
   console.log('cropping: ' + size);
   var tempPath = format(outputTempFilePath, uniqueId, size);
   var finalPath = format(outputFilePath, uniqueId, size);
