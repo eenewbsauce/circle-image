@@ -23,12 +23,13 @@ npm install circle-image --save
 ```
 
 ## Usage
+the image (imagepath) needs to be square and dimensions need to be larger than the biggest size specified in imageSizes below.
 
 ```javascript
 var images = require('circle-image');
 var imageSizes = [125, 100, 30];
 //uniqueId param is used to identify a user
-//so user the primary key or something guaranteed to be unique
+//so use the primary key or something guaranteed to be unique
 images.execute('imagepath', uniqueId, imageSizes).then(function (paths) {
   //array of circularized image paths
   console.log(paths[0]); //circle_user_{uniqueId}_150.png
