@@ -3,6 +3,9 @@ Circle-Image
 ## Github
 Pull request and issues tracked here: https://github.com/eenewbsauce/circle-image
 
+## NPM
+Official home on NPM: https://www.npmjs.com/package/circle-image
+
 circle-image is based on ImageMagick. You can install it one of the following ways:
 
 On Ubuntu
@@ -37,3 +40,4 @@ images.execute('imagepath', uniqueId, imageSizes).then(function (paths) {
   console.log(paths[0]); //circle_user_{uniqueId}_150.png
 })
 ```
+# circle-image
