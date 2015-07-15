@@ -1,5 +1,7 @@
 Circle-Image
 ============
+## Github
+Pull request and issues tracked here: https://github.com/eenewbsauce/circle-image
 
 circle-image is based on ImageMagick. You can install it one of the following ways:
 
