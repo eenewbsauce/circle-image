@@ -6,6 +6,7 @@ Pull request and issues tracked here: https://github.com/eenewbsauce/circle-imag
 ## NPM
 Official home on NPM: https://www.npmjs.com/package/circle-image
 
+## Install Dependencies
 circle-image is based on ImageMagick. You can install it one of the following ways:
 
 On Ubuntu
