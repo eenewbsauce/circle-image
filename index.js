@@ -9,22 +9,35 @@ var basePath = path.dirname(require.main.filename);
 var baseParts = basePath.split('/');
 baseParts.splice(-1, 1);
 var finalPath = baseParts.join('/');
+console.log(finalPath);
 var outputTempFilePath = finalPath + '/uploads/temp_user_%d_%d.png';
 var outputFilePath = finalPath +'/uploads/circle_user_%d_%d.png';
-//var sizes = [150, 125, 100, 33];
 
 exports.execute = function execute(imagePath, uniqueId, sizesArray) {
   var defer = Q.defer();
   getDimensions(imagePath).then(function success(dimensions) {
-    var sortedSizes = sizesArray.sort(function(a, b){return b-a});
-    if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0] && dimensions.width === dimensions.height) {
-      processImages(imagePath, uniqueId, sortedSizes).then(function success(paths) {
-        defer.resolve(paths);
-      }, function error(err) {
-        defer.reject(err);
-      });
+    var sortedSizes = sizesArray.sort(function(a, b){return b-a;});
+    //if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0] && dimensions.width === dimensions.height) {
+    if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0]) {
+      if (dimensions.width !== dimensions.height) {
+        squareUp(imagePath, sortedSizes[0], dimensions.width, dimensions.height).then(function success(response) {
+          processImages(imagePath, uniqueId, sortedSizes).then(function success(paths) {
+            defer.resolve(paths);
+          }, function error(err) {
+            defer.reject(err);
+          });
+        }, function error(err) {
+          defer.reject('squaring image failed');
+        });
+      } else {
+        processImages(imagePath, uniqueId, sortedSizes).then(function success(paths) {
+          defer.resolve(paths);
+        }, function error(err) {
+          defer.reject(err);
+        });
+      }
     } else {
-      defer.reject("image is too small to process");
+      defer.reject("Image is too small to process. Image must be larger than the biggest size in sizesArray");
     }
   }, function error(err) {
     defer.reject(err);
@@ -77,7 +90,7 @@ function processImages(path, uniqueId, sizesArray) {
     });
 
     return defer.promise;
-  }
+  };
 
   async.each(sizesArray, function(size, callback) {
     console.log('processing image size: ' + size);
@@ -87,12 +100,27 @@ function processImages(path, uniqueId, sizesArray) {
       callback(err);
     });
   }, function (err) {
-    if (err) defer.reject(err)
+    if (err) defer.reject(err);
     defer.resolve(paths);
   });
 
   return defer.promise;
 }
+
+var squareUp = function squareUp(path, size, originalWidth, originalHeight) {
+  console.log('square up image');
+  return easyimg.crop({
+    src: path,
+    width: size,
+    height: size,
+    x: originalWidth/2,
+    y: originalHeight/2
+  }).then(function success (path) {
+    return path;
+  }, function error (err) {
+    return err;
+  });
+};
 
 var resize = function resize(path, uniqueId, size) {
   console.log('cropping: ' + size);

@@ -14,6 +14,13 @@
     "cropping",
     "s3"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eenewbsauce/circle-image"
+  },
+  "bugs": {
+    "url": "https://github.com/eenewbsauce/circle-image/issues"
+  },
   "author": "Ryan Tracey (eenewbsauce)",
   "license": "ISC",
   "dependencies": {

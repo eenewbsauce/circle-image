@@ -34,3 +34,7 @@ node_modules
 #images
 *.png
 *.jpg
+
+#testing code and assets
+uploads
+app.js
