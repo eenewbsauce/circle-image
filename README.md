@@ -29,7 +29,7 @@ npm install circle-image --save
 ```
 
 ## Usage
-the image (imagepath) needs to be square and dimensions need to be larger than the biggest size specified in imageSizes below.
+The image (imagepath) dimensions need to be larger than the biggest size specified in imageSizes below.
 
 ```javascript
 var images = require('circle-image');
