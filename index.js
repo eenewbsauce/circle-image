@@ -17,7 +17,7 @@ exports.execute = function execute(imagePath, uniqueId, sizesArray) {
   var defer = Q.defer();
   getDimensions(imagePath).then(function success(dimensions) {
     var sortedSizes = sizesArray.sort(function(a, b){return b-a;});
-    //if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0] && dimensions.width === dimensions.height) {
+
     if (dimensions.width > sortedSizes[0] && dimensions.height > sortedSizes[0]) {
       if (dimensions.width !== dimensions.height) {
         squareUp(imagePath, sortedSizes[0], dimensions.width, dimensions.height).then(function success(response) {

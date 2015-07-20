@@ -29,6 +29,7 @@ npm install circle-image --save
 ```
 
 ## Usage
+Make sure you have a folder called "uploads" in the root of your node application (ie: app.js).
 The image (imagepath) dimensions need to be larger than the biggest size specified in imageSizes below.
 
 ```javascript
