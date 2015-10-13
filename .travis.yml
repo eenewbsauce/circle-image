@@ -10,4 +10,5 @@ node_js:
 - "iojs"
 before_install:
 - npm install
+- npm install mocha
 - sudo apt-get install imagemagick
