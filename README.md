@@ -39,6 +39,6 @@ var imageSizes = [125, 100, 30];
 //so use the primary key or something guaranteed to be unique
 images.execute('imagepath', uniqueId, imageSizes).then(function (paths) {
   //array of circularized image paths
-  console.log(paths[0]); //circle_user_{uniqueId}_150.png
+  console.log(paths[0]); //circle_user_{uniqueId}_125.png
 })
 ```
