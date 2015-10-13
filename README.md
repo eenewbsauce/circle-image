@@ -1,5 +1,7 @@
 Circle-Image
 ============
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://github.com/eenewbsauce/circle-image)
+
 ## Github
 Pull request and issues tracked here: https://github.com/eenewbsauce/circle-image
 
