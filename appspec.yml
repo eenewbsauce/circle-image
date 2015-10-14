@@ -1,5 +1,5 @@
 version: 0.0
 os: linux
 files:
-- source: test/
-- destination: /usr/share/circle-image
+  - source: test/
+    destination: /usr/share/circle-image
