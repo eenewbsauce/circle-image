@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/",
-    "ci-test": "istanbul cover mocha \"test/*-test.js\" > test.tap && istanbul report clover"
+    "ci-test": "istanbul cover tape \"test/*-test.js\" > test.tap && istanbul report clover"
   },
   "keywords": [
     "circular",
@@ -34,6 +34,7 @@
     "sprintf-js": "^1.0.2"
   },
   "devDependencies": {
-    "should": "^7.1.0"
+    "should": "^7.1.0",
+    "tape": "^4.2.1"
   }
 }
