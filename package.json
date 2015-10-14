@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/",
-    "ci-test": "istanbul cover mocha --reporter mocha-tap-reporter \"test/*.js\" > test.tap && istanbul report clover",
+    "ci-test": "mocha --reporter mocha-tap-reporter test/",
     "ci-lint": "eslint -f checkstyle index.js > checkstyle-result.xml"
   },
   "keywords": [
