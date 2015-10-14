@@ -5,5 +5,5 @@ files:
     destination: /usr/share/circle-image
 hooks:
   BeforeInstall:
-    - deploy_hooks/before_install.sh
+    - location: deploy_hooks/before_install.sh
       runas: ec2-user
