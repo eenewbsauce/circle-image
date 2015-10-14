@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/",
-    "ci-test": "istanbul cover mocha \"test/*.js\" > test.tap && istanbul report clover",
+    "ci-test": "istanbul cover mocha --reporter mocha-tap-reporter \"test/*.js\" > test.tap && istanbul report clover",
     "ci-lint": "eslint -f checkstyle index.js > checkstyle-result.xml"
   },
   "keywords": [
@@ -38,6 +38,7 @@
     "eslint": "^1.6.0",
     "istanbul": "^0.3.22",
     "mocha": "^2.3.3",
+    "mocha-tap-reporter": "^0.1.3",
     "should": "^7.1.0",
     "tape": "^4.2.1"
   }
