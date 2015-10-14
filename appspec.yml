@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: ./
+  - source: test/
     destination: /usr/share/circle-image
 hooks:
   BeforeInstall:
