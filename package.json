@@ -4,7 +4,8 @@
   "description": "A promise-based library for circular cropping images. This package can create several sizes of the same image and save them to disk. Using any method of your choice, you could upload the files to S3 after processing is complete.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/"
+    "test": "mocha test/",
+    "ci-test": "istanbul cover mocha \"test/*-test.js\" > test.tap && istanbul report clover"
   },
   "keywords": [
     "circular",
