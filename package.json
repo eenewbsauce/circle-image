@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/",
-    "ci-test": "mocha -- -R tap test/",
+    "ci-test": "mocha -R tap test/",
     "ci-lint": "eslint -f checkstyle index.js > checkstyle-result.xml"
   },
   "keywords": [
