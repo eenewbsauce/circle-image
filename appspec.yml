@@ -1,5 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: test/
+  - source: ./
     destination: /usr/share/circle-image
+hooks:
+  BeforeInstall:
+    - deploy_hooks/before_install.sh
