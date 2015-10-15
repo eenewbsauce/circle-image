@@ -2,6 +2,8 @@ Circle-Image
 ============
 [![Build Status](http://jenkins.justsift.com:8080/buildStatus/icon?job=Circle-Image)](http://jenkins.justsift.com:8080/job/Circle-Image/)
 
+Testing Jenkins
+
 ## Github
 Pull request and issues tracked here: https://github.com/eenewbsauce/circle-image
 
