@@ -1,5 +1,7 @@
 Circle-Image
 ============
+Testing Jenkins integraton
+
 [![Build Status](http://jenkins.justsift.com:8080/buildStatus/icon?job=Circle-Image)](http://jenkins.justsift.com:8080/job/Circle-Image/)
 
 ## Github
