@@ -8,6 +8,6 @@ describe('test one', function(){
 
 describe('test two', function(){
   it('should be equal', function(){
-    (4).should.be.exactly(5).and.be.a.Number();
+    (5).should.be.exactly(5).and.be.a.Number();
   });
 });
