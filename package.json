@@ -15,7 +15,8 @@
     "image",
     "cropping",
     "s3",
-    "imagemagick"
+    "imagemagick",
+    "email"
   ],
   "repository": {
     "type": "git",
